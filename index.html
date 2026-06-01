@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="format-detection" content="telephone=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<title>2026骞村叏鐪佷汉绀鹃鍩熺綉缁滃拰鏁版嵁瀹夊叏宸ヤ綔鍩硅鐝€斺€斿煿璁寚鍗?/title>
+<style>
+/* ===== Reset & Base ===== */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { font-size: 16px; -webkit-text-size-adjust: 100%; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Helvetica Neue", sans-serif;
+  background: #f0f2f5;
+  color: #2c3e50;
+  line-height: 1.6;
+  max-width: 480px;
+  margin: 0 auto;
+  min-height: 100vh;
+  padding-top: 52px;
+  padding-bottom: 64px;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ===== Header ===== */
+.header {
+  position: fixed; top: 0; left: 50%; transform: translateX(-50%);
+  width: 100%; max-width: 480px; z-index: 100;
+  background: linear-gradient(135deg, #1a3c5e 0%, #1f4d7a 100%);
+  color: #fff; text-align: center;
+  padding: 8px 16px; height: 52px;
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 2px 8px rgba(0,0,0,.15);
+}
+.header .icon { font-size: 22px; margin-right: 6px; }
+.header h1 { font-size: 15px; font-weight: 600; letter-spacing: .5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.header .sub { font-size: 11px; opacity: .85; margin-top: 1px; }
+
+/* ===== Bottom Tab Bar ===== */
+.tab-bar {
+  position: fixed; bottom: 0; left: 50%; transform: translateX(-50%);
+  width: 100%; max-width: 480px; z-index: 100;
+  background: #fff; display: flex;
+  border-top: 1px solid #e8ecf1;
+  box-shadow: 0 -2px 8px rgba(0,0,0,.06);
+  padding-bottom: env(safe-area-inset-bottom, 0);
+}
+.tab-item {
+  flex: 1; display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  padding: 8px 4px; cursor: pointer;
+  color: #95a5a6; font-size: 11px;
+  transition: color .2s; user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  position: relative;
+}
+.tab-item .tab-icon { font-size: 20px; margin-bottom: 2px; line-height: 1; }
+.tab-item.active { color: #1a3c5e; font-weight: 600; }
+.tab-item.active::after {
+  content: ''; position: absolute; top: 0; left: 20%; right: 20%;
+  height: 3px; background: #c41e3a; border-radius: 0 0 3px 3px;
+}
+
+/* ===== Content Area ===== */
+.tab-content { display: none; padding: 16px; animation: fadeIn .25s ease; }
+.tab-content.active { display: block; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+
+/* ===== Cards ===== */
+.card {
+  background: #fff; border-radius: 12px;
+  padding: 16px; margin-bottom: 12px;
+  box-shadow: 0 1px 4px rgba(0,0,0,.06);
+  border: 1px solid #eef1f5;
+}
+.card-title {
+  font-size: 16px; font-weight: 700; color: #1a3c5e;
+  margin-bottom: 8px; padding-bottom: 8px;
+  border-bottom: 1px solid #f0f2f5;
+  display: flex; align-items: center; gap: 8px;
+}
+.card-title .dot { width: 6px; height: 6px; border-radius: 50%; background: #c41e3a; flex-shrink: 0; }
+
+/* ===== Training Notes ===== */
+.note-list { list-style: none; }
+.note-list li {
+  padding: 10px 0; border-bottom: 1px solid #f5f6f8;
+  display: flex; gap: 10px; font-size: 14px; line-height: 1.7;
+}
+.note-list li:last-child { border-bottom: none; }
+.note-num {
+  flex-shrink: 0; width: 22px; height: 22px;
+  background: #1a3c5e; color: #fff; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 12px; font-weight: 600; margin-top: 2px;
+}
+.contact-cards { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 12px; }
+.contact-card {
+  flex: 1; min-width: 140px; background: #f8fafc;
+  border-radius: 10px; padding: 12px; text-align: center;
+  border: 1px solid #e8ecf1;
+}
+.contact-card .cc-name { font-size: 15px; font-weight: 600; color: #1a3c5e; }
+.contact-card .cc-role { font-size: 12px; color: #7f8c8d; margin: 2px 0 6px; }
+.contact-card .cc-phone { font-size: 15px; color: #c41e3a; font-weight: 600; letter-spacing: 1px; }
+
+/* ===== Schedule ===== */
+.day-selector { display: flex; gap: 8px; margin-bottom: 16px; }
+.day-btn {
+  flex: 1; padding: 10px; border: 1.5px solid #dde4ed; border-radius: 10px;
+  background: #fff; font-size: 13px; font-weight: 600; cursor: pointer;
+  text-align: center; transition: all .2s; color: #5a6c7d;
+}
+.day-btn.active { background: #1a3c5e; color: #fff; border-color: #1a3c5e; }
+.day-btn .day-date { font-size: 11px; font-weight: 400; opacity: .7; display: block; }
+.schedule-day { display: none; }
+.schedule-day.active { display: block; }
+.schedule-item {
+  background: #fff; border-radius: 10px; padding: 14px;
+  margin-bottom: 10px; border-left: 4px solid #1a3c5e;
+  box-shadow: 0 1px 3px rgba(0,0,0,.04);
+  position: relative;
+}
+.schedule-item.rest { border-left-color: #95a5a6; opacity: .8; }
+.schedule-item.exam { border-left-color: #c41e3a; }
+.schedule-item .si-time {
+  font-size: 13px; font-weight: 700; color: #1a3c5e;
+  margin-bottom: 4px; display: flex; align-items: center; gap: 6px;
+}
+.schedule-item .si-time .badge {
+  font-size: 10px; padding: 2px 8px; border-radius: 10px;
+  color: #fff; font-weight: 500;
+}
+.badge-morning { background: #3498db; }
+.badge-afternoon { background: #e67e22; }
+.badge-evening { background: #7f8c8d; }
+.schedule-item .si-title { font-size: 14px; font-weight: 600; color: #2c3e50; line-height: 1.5; }
+.schedule-item .si-speaker { font-size: 12px; color: #7f8c8d; margin-top: 4px; }
+.schedule-item .si-org { font-size: 11px; color: #95a5a6; }
+
+/* ===== Personnel ===== */
+.search-box {
+  position: sticky; top: 52px; z-index: 10;
+  background: #f0f2f5; padding: 0 0 12px;
+}
+.search-input {
+  width: 100%; padding: 12px 16px 12px 42px;
+  border: 1.5px solid #dde4ed; border-radius: 24px;
+  font-size: 14px; background: #fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 24 24' fill='none' stroke='%2395a5a6' stroke-width='2'%3E%3Ccircle cx='11' cy='11' r='8'%3E%3C/circle%3E%3Cpath d='m21 21-4.35-4.35'%3E%3C/path%3E%3C/svg%3E") 14px center no-repeat;
+  outline: none; transition: border-color .2s;
+}
+.search-input:focus { border-color: #1a3c5e; }
+.search-stats { font-size: 12px; color: #95a5a6; text-align: center; padding: 4px 0; }
+.person-card {
+  background: #fff; border-radius: 10px; padding: 14px;
+  margin-bottom: 8px; display: flex; align-items: center;
+  gap: 12px; box-shadow: 0 1px 3px rgba(0,0,0,.04);
+  cursor: pointer; transition: background .15s;
+}
+.person-card:active { background: #f8fafc; }
+.person-avatar {
+  width: 42px; height: 42px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 16px; font-weight: 700; color: #fff; flex-shrink: 0;
+}
+.avatar-male { background: #3498db; }
+.avatar-female { background: #e91e63; }
+.person-info { flex: 1; min-width: 0; }
+.person-info .pi-name { font-size: 15px; font-weight: 600; color: #2c3e50; }
+.person-info .pi-unit { font-size: 12px; color: #7f8c8d; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.person-phone {
+  font-size: 13px; color: #95a5a6; flex-shrink: 0;
+  text-align: right; letter-spacing: .5px;
+}
+.person-phone.revealed { color: #c41e3a; font-weight: 600; }
+.highlight { background: #fff3cd; border-radius: 2px; padding: 0 1px; }
+
+/* ===== Meals ===== */
+.meal-card {
+  background: #fff; border-radius: 12px; padding: 16px;
+  margin-bottom: 12px; display: flex; align-items: center;
+  gap: 14px; box-shadow: 0 1px 4px rgba(0,0,0,.06);
+  border: 1px solid #eef1f5;
+}
+.meal-icon {
+  width: 50px; height: 50px; border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 26px; flex-shrink: 0;
+}
+.meal-breakfast { background: #fff8e1; }
+.meal-lunch { background: #fff3e0; }
+.meal-dinner { background: #e8f5e9; }
+.meal-info .mi-name { font-size: 16px; font-weight: 700; color: #1a3c5e; }
+.meal-info .mi-time { font-size: 13px; color: #7f8c8d; margin: 2px 0; }
+.meal-info .mi-location { font-size: 13px; color: #5a6c7d; }
+.meal-info .mi-note { font-size: 11px; color: #95a5a6; margin-top: 2px; }
+
+/* ===== Phone Reveal Toast ===== */
+.toast {
+  position: fixed; top: 60px; left: 50%; transform: translateX(-50%);
+  background: rgba(0,0,0,.82); color: #fff; padding: 10px 20px;
+  border-radius: 20px; font-size: 14px; z-index: 200;
+  pointer-events: none; opacity: 0; transition: opacity .3s;
+}
+.toast.show { opacity: 1; }
+
+/* ===== Footer ===== */
+.page-footer {
+  text-align: center; padding: 20px 16px 8px;
+  font-size: 11px; color: #bdc3c7;
+}
+
+/* ===== Responsive tweaks ===== */
+@media (min-width: 481px) {
+  .header { border-radius: 0; }
+  .tab-bar { border-radius: 0; }
+}
+
+/* ===== Location Card ===== */
+.location-card {
+  background: linear-gradient(135deg, #1a3c5e, #1f4d7a);
+  color: #fff; border-radius: 12px; padding: 16px;
+  margin-bottom: 12px; display: flex; align-items: center; gap: 12px;
+}
+.location-card .lc-icon { font-size: 28px; }
+.location-card .lc-text { font-size: 13px; opacity: .9; line-height: 1.6; }
+.location-card .lc-text strong { font-size: 15px; display: block; margin-bottom: 2px; }
+</style>
+</head>
+<body>
+
+<!-- ===== Header ===== -->
+<header class="header">
+  <span class="icon">馃搵</span>
+  <div>
+    <h1>鍏ㄧ渷浜虹ぞ棰嗗煙缃戠粶鍜屾暟鎹畨鍏ㄥ伐浣滃煿璁彮</h1>
+    <div class="sub">2026骞?鏈?路 鍩硅鎸囧崡</div>
+  </div>
+</header>
+
+<!-- ===== Toast ===== -->
+<div class="toast" id="toast"></div>
+
+<!-- ===== Tab Content: 鍩硅椤荤煡 ===== -->
+<main>
+<section class="tab-content active" id="tab-notes">
+  <div class="card">
+    <div class="card-title"><span class="dot"></span>鍩硅椤荤煡</div>
+    <ul class="note-list">
+      <li>
+        <span class="note-num">涓€</span>
+        <span>璇疯鐪熼槄璇诲煿璁寚鍗楋紝鍚堢悊瀹夋帓濂藉煿璁拰宸ヤ綔銆?/span>
+      </li>
+      <li>
+        <span class="note-num">浜?/span>
+        <span>璇锋彁鍓?0鍒嗛挓杩涘叆浼氬満骞舵寜鎸囧畾甯綅灏卞骇锛岃鍦ㄥ煿璁湡闂村皢鎵嬫満缃簬闈欓煶鐘舵€侊紝璇峰嬁闅忔剰鍑哄叆浼氬満锛屼繚鎸佷細鍦哄畨闈欍€?/span>
+      </li>
+      <li>
+        <span class="note-num">涓?/span>
+        <span>鏈浼氳6鏈?鏃ワ紙鏅氾級鈥?鏃ワ紙涓崍锛夐瀹胯垂鐢ㄧ敱鐪佸巺璐熻矗鎵挎媴锛屽線杩斾氦閫氳垂鐢ㄨ嚜鐞嗐€?/span>
+      </li>
+      <li>
+        <span class="note-num">鍥?/span>
+        <span>璇峰弬鍔犲煿璁汉鍛樺湪鍩硅鏈熼棿涓ユ牸璐交钀藉疄涓ぎ鍏」瑙勫畾鍙婂叾瀹炴柦缁嗗垯绮剧锛屼弗鏍奸伒瀹堝涔犲煿璁€佸畨鍏ㄤ繚瀵嗗拰寤夋磥鑷緥鍚勯」瑙勫畾锛岃鐪熷涔狅紝绉瀬浜ゆ祦锛岀‘淇濆煿璁晥鏋溿€?/span>
+      </li>
+    </ul>
+  </div>
+
+  <div class="location-card">
+    <div class="lc-icon">馃搷</div>
+    <div class="lc-text">
+      <strong>鍩硅鍦扮偣</strong>
+      鍚堣偉涓績鏅洪€夊亣鏃ラ厭搴楅檮灞炴ゼ涓€妤煎鍔熻兘鍘?    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title"><span class="dot"></span>浼氬姟鑱旂郴</div>
+    <div class="contact-cards">
+      <div class="contact-card">
+        <div class="cc-name">寮犲崥鏂?/div>
+        <div class="cc-role">鍘呬俊鎭腑蹇冭仈绯讳汉</div>
+        <div class="cc-phone" onclick="copyPhone(this,'MTkwNTUxNTMzMzg=')" title="鐐瑰嚮澶嶅埗">馃摓 190****3338</div>
+      </div>
+      <div class="contact-card">
+        <div class="cc-name">鏋楃粡鐞?/div>
+        <div class="cc-role">閰掑簵鑱旂郴浜?/div>
+        <div class="cc-phone" onclick="copyPhone(this,'MTgxMzAwMjI1ODQ=')" title="鐐瑰嚮澶嶅埗">馃摓 181****2584</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== Tab Content: 璇剧▼瀹夋帓 ===== -->
+<section class="tab-content" id="tab-schedule">
+  <div class="day-selector">
+    <div class="day-btn active" onclick="switchDay(0)" data-day="0">
+      绗竴澶?span class="day-date">6鏈?鏃?鍛ㄤ簩</span>
+    </div>
+    <div class="day-btn" onclick="switchDay(1)" data-day="1">
+      绗簩澶?span class="day-date">6鏈?鏃?鍛ㄤ笁</span>
+    </div>
+    <div class="day-btn" onclick="switchDay(2)" data-day="2">
+      绗笁澶?span class="day-date">6鏈?鏃?鍛ㄥ洓</span>
+    </div>
+  </div>
+
+  <!-- Day 1 -->
+  <div class="schedule-day active" id="day-0">
+    <div class="schedule-item rest">
+      <div class="si-time"><span class="badge badge-afternoon">涓嬪崍</span> 鍏ㄥぉ</div>
+      <div class="si-title">鍩硅鎶ュ埌</div>
+      <div class="si-speaker">鍔炵悊鍏ヤ綇锛岄鍙栧煿璁潗鏂?/div>
+    </div>
+  </div>
+
+  <!-- Day 2 -->
+  <div class="schedule-day" id="day-1">
+    <div class="schedule-item">
+      <div class="si-time"><span class="badge badge-morning">涓婂崍</span> 08:30 鈥?08:40</div>
+      <div class="si-title">寮€鐝华寮?/div>
+      <div class="si-speaker">鍘呴瀵?/div>
+    </div>
+    <div class="schedule-item">
+      <div class="si-time"><span class="badge badge-morning">涓婂崍</span> 08:40 鈥?10:10</div>
+      <div class="si-title">寮哄寲璐ｄ换鎰忚瘑锛屾彁鍗囨妧鏈按骞?br>绛戠墷浜虹ぞ棰嗗煙缃戠粶鍜屾暟鎹畨鍏ㄩ槻鎶ゅ睆闅?/div>
+      <div class="si-speaker">涓昏浜猴細鐜嬪博</div>
+      <div class="si-org">浜虹ぞ閮ㄤ俊鎭腑蹇?淇℃伅瀹夊叏绠＄悊澶勫壇澶勯暱</div>
+    </div>
+    <div class="schedule-item">
+      <div class="si-time"><span class="badge badge-morning">涓婂崍</span> 10:20 鈥?11:50</div>
+      <div class="si-title">鎻愬崌缃戠粶瀹夊叏鎰忚瘑锛岀瓚鐗㈠畨鍏ㄥ睆闅?/div>
+      <div class="si-speaker">涓昏浜猴細鐜嬫櫤娴?/div>
+      <div class="si-org">鐪佸叕瀹夊巺缃戝畨鎬婚槦 涓讳换绉戝憳</div>
+    </div>
+    <div class="schedule-item">
+      <div class="si-time"><span class="badge badge-afternoon">涓嬪崍</span> 14:30 鈥?16:00</div>
+      <div class="si-title">鍩轰簬涓€浣撳寲鏁版嵁鍩虹骞冲彴鐨勫畨鍏ㄤ綋绯讳粙缁?/div>
+      <div class="si-speaker">涓昏浜猴細寮犻潤</div>
+      <div class="si-org">瀹夊窘鐪佸ぇ鏁版嵁涓績 楂樼骇宸ョ▼甯?/div>
+    </div>
+    <div class="schedule-item">
+      <div class="si-time"><span class="badge badge-afternoon">涓嬪崍</span> 16:10 鈥?17:00</div>
+      <div class="si-title">AI鏃朵唬鐨勭綉缁滃畨鍏ㄦ敾闃?/div>
+      <div class="si-speaker">涓昏浜猴細鐜嬩笢浜?/div>
+      <div class="si-org">涓夊疄杞欢绉戞妧鏈夐檺鍏徃 鎶€鏈笓瀹?/div>
+    </div>
+    <div class="schedule-item">
+      <div class="si-time"><span class="badge badge-afternoon">涓嬪崍</span> 17:00 鈥?17:50</div>
+      <div class="si-title">鏁版嵁瀹夊叏椋庨櫓璇勪及鍥芥爣瑙ｈ</div>
+      <div class="si-speaker">涓昏浜猴細渚簹涓?/div>
+      <div class="si-org">涓夊疄杞欢绉戞妧鏈夐檺鍏徃 鎶€鏈笓瀹?/div>
+    </div>
+    <div class="schedule-item">
+      <div class="si-time"><span class="badge badge-evening">鏅氫笂</span> 19:00 鈥?21:00</div>
+      <div class="si-title">浜ゆ祦鐮旇</div>
+      <div class="si-speaker">鍚勫競鍙婁腑蹇冧汉鍛?/div>
+    </div>
+  </div>
+
+  <!-- Day 3 -->
+  <div class="schedule-day" id="day-2">
+    <div class="schedule-item">
+      <div class="si-time"><span class="badge badge-morning">涓婂崍</span> 08:30 鈥?09:30</div>
+      <div class="si-title">缃戠粶鏁版嵁鍚堣浣撶郴寤鸿涓庤惤鍦板疄鎿嶅煿璁?/div>
+      <div class="si-speaker">涓昏浜猴細鑳℃竻宄?/div>
+      <div class="si-org">涓闆嗗洟澶╁阜淇℃伅鎶€鏈偂浠芥湁闄愬叕鍙?楂樼骇缃戠粶瀹夊叏绛夌骇娴嬭瘎甯?/div>
+    </div>
+    <div class="schedule-item">
+      <div class="si-time"><span class="badge badge-morning">涓婂崍</span> 09:30 鈥?10:30</div>
+      <div class="si-title">鏀婚槻婕旂粌闃插畧绔伐浣滄柟妗堜粙缁?/div>
+      <div class="si-speaker">涓昏浜猴細鑲栨祬</div>
+      <div class="si-org">涓浗鐢典俊瀹夊窘鍒嗗叕鍙?鎶€鏈笓瀹?/div>
+    </div>
+    <div class="schedule-item exam">
+      <div class="si-time"><span class="badge badge-morning">涓婂崍</span> 10:40 鈥?11:10</div>
+      <div class="si-title">馃摑 缁撲笟鑰冭瘯</div>
+      <div class="si-speaker">鍙傚姞鍩硅瀛﹀憳</div>
+    </div>
+    <div class="schedule-item">
+      <div class="si-time"><span class="badge badge-morning">涓婂崍</span> 11:10 鈥?11:40</div>
+      <div class="si-title">鍩硅灏忕粨</div>
+      <div class="si-speaker">涓績棰嗗</div>
+    </div>
+    <div class="schedule-item rest">
+      <div class="si-time"><span class="badge badge-afternoon">涓嬪崍</span></div>
+      <div class="si-title">杩旂▼</div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== Tab Content: 浜哄憳鍚嶅崟 ===== -->
+<section class="tab-content" id="tab-personnel">
+  <div class="search-box">
+    <input type="text" class="search-input" id="searchInput" placeholder="鎼滅储濮撳悕銆佸崟浣嶆垨鎵嬫満鍙峰悗4浣嶁€? oninput="filterPersonnel()" autocomplete="off">
+    <div class="search-stats" id="searchStats">鍏?<strong>43</strong> 浜?/div>
+  </div>
+  <div id="personnelList"></div>
+</section>
+
+<!-- ===== Tab Content: 椁愰ギ瀹夋帓 ===== -->
+<section class="tab-content" id="tab-meals">
+  <div class="meal-card">
+    <div class="meal-icon meal-breakfast">馃</div>
+    <div class="meal-info">
+      <div class="mi-name">鏃╅</div>
+      <div class="mi-time">馃晲 06:30 鈥?08:30锛堣嚜鍔╅锛?/div>
+      <div class="mi-location">馃搷 涓€妤肩患鍚堝ぇ鍘?/div>
+    </div>
+  </div>
+  <div class="meal-card">
+    <div class="meal-icon meal-lunch">馃崥</div>
+    <div class="meal-info">
+      <div class="mi-name">鍗堥</div>
+      <div class="mi-time">馃晲 12:00 鈥?13:00锛堣嚜鍔╅锛?/div>
+      <div class="mi-location">馃搷 涓€妤肩患鍚堝ぇ鍘?/div>
+    </div>
+  </div>
+  <div class="meal-card">
+    <div class="meal-icon meal-dinner">馃嵅</div>
+    <div class="meal-info">
+      <div class="mi-name">鏅氶</div>
+      <div class="mi-time">馃晲 17:30 鈥?19:00锛堣嚜鍔╅锛?/div>
+      <div class="mi-location">馃搷 涓€妤肩患鍚堝ぇ鍘?/div>
+    </div>
+  </div>
+  <div class="card" style="margin-top:8px">
+    <div class="card-title"><span class="dot"></span>娓╅Θ鎻愮ず</div>
+    <p style="font-size:13px;color:#5a6c7d;line-height:1.8;">
+      6鏈?鏃ユ櫄椁愯捣鑷?鏈?鏃ュ崍椁愭锛岄瀹胯垂鐢ㄧ敱鐪佸巺璐熻矗鎵挎媴銆傝鍑埧鍗℃垨鍩硅璇佷欢灏遍銆?    </p>
+  </div>
+</section>
+</main>
+
+<!-- ===== Bottom Tab Bar ===== -->
+<nav class="tab-bar">
+  <div class="tab-item active" onclick="switchTab('notes', this)" data-tab="notes">
+    <span class="tab-icon">馃摉</span>鍩硅椤荤煡
+  </div>
+  <div class="tab-item" onclick="switchTab('schedule', this)" data-tab="schedule">
+    <span class="tab-icon">馃搮</span>璇剧▼瀹夋帓
+  </div>
+  <div class="tab-item" onclick="switchTab('personnel', this)" data-tab="personnel">
+    <span class="tab-icon">馃懃</span>浜哄憳鍚嶅崟
+  </div>
+  <div class="tab-item" onclick="switchTab('meals', this)" data-tab="meals">
+    <span class="tab-icon">馃嵔锔?/span>椁愰ギ瀹夋帓
+  </div>
+</nav>
+
+<script>
+// ===== Base64 Decode Helper =====
+function d(b64) { try { return atob(b64); } catch(e) { return ''; } }
+function maskPhone(raw) { return raw.slice(0,3) + '****' + raw.slice(-4); }
+
+// ===== Personnel Data (phone numbers Base64 encoded) =====
+var PERSONNEL = [
+  { name:"鐜嬩竴鍏?, gender:"鐢?, unit:"鍚堣偉甯備汉绀惧眬淇℃伅涓績", title:"楂樼骇宸ョ▼甯?, phone:"MTM4NTUxMzI2NTY=" },
+  { name:"璋㈡枌", gender:"鐢?, unit:"鍚堣偉甯備汉绀惧眬淇℃伅涓績", title:"绉戦暱", phone:"MTg3MjYzOTMyOTI=" },
+  { name:"鏉ㄤ繆", gender:"鐢?, unit:"鑺滄箹甯備汉绀惧眬淇℃伅涓績", title:"鍓富浠?, phone:"MTUzNTc4ODEzOTI=" },
+  { name:"瀹夋櫒", gender:"鐢?, unit:"鑺滄箹甯備汉绀惧眬淇℃伅涓績", title:"宸ヤ綔浜哄憳", phone:"MTgxNTY1ODYyODg=" },
+  { name:"鍛ㄧ惁", gender:"鐢?, unit:"娣崡甯備汉绀惧眬淇℃伅涓績", title:"鍓富浠?, phone:"MTM5NTY0MDM1NjY=" },
+  { name:"灏瑰鍕?, gender:"鐢?, unit:"娣崡甯備汉绀惧眬淇℃伅涓績", title:"缃戠粶绉戠闀?, phone:"MTMzMzU1NDk5MjE=" },
+  { name:"浣曟檽瑙?, gender:"鐢?, unit:"閾滈櫟甯備汉绀惧眬淇℃伅涓績", title:"宸ョ▼甯?, phone:"MTM4NTYyNTIwNzI=" },
+  { name:"鏉ㄤ腹", gender:"濂?, unit:"閾滈櫟甯備汉绀惧眬淇℃伅涓績", title:"宸ョ▼甯?, phone:"MTk5NDI2MjIxNTE=" },
+  { name:"璋", gender:"鐢?, unit:"闃滈槼甯備汉绀惧眬淇℃伅涓績", title:"鍓富浠?, phone:"MTU5NTU4NjgzMzk=" },
+  { name:"鏉庣値", gender:"鐢?, unit:"闃滈槼甯備汉绀惧眬淇℃伅涓績", title:"宸ヤ綔浜哄憳", phone:"MTg4NTU1ODcyMDE=" },
+  { name:"寮犻緳褰?, gender:"鐢?, unit:"娣寳甯備汉绀惧眬淇℃伅涓績", title:"鍓富浠?, phone:"MTM2NjU2MTAwOTk=" },
+  { name:"鍒樺瓭涓?, gender:"鐢?, unit:"娣寳甯備汉绀惧眬淇℃伅涓績", title:"宸ョ▼甯?, phone:"MTc3NTYxMjYxMDE=" },
+  { name:"绋嬫澗", gender:"鐢?, unit:"瀹垮窞甯備汉绀惧眬鏁版嵁绠＄悊涓績", title:"鍓富浠?, phone:"MTk5NjU3MDc1MjU=" },
+  { name:"浠诲織寮?, gender:"鐢?, unit:"瀹垮窞甯傚焽妗ュ尯浜虹ぞ灞€淇℃伅涓績", title:"涓讳换", phone:"MTgxMDU1NzE2MzM=" },
+  { name:"鍒樻案", gender:"鐢?, unit:"浜冲窞甯備汉绀惧眬浜烘墠涓績", title:"鍓富浠?, phone:"MTM5NTYxODg4OTk=" },
+  { name:"鏈辩帀鍗?, gender:"鐢?, unit:"浜冲窞甯備汉绀惧眬浜烘墠涓績", title:"楂樼骇宸ョ▼甯?, phone:"MTgxNTY3ODEzMjA=" },
+  { name:"鑸掍寒", gender:"鐢?, unit:"瀹夊簡甯傚姵鍔ㄤ繚闅滀俊鎭腑蹇?, title:"宸ョ▼甯?, phone:"MTgwNTU2OTg4MzA=" },
+  { name:"閭辩", gender:"鐢?, unit:"瀹夊簡甯傚姵鍔ㄤ繚闅滀俊鎭腑蹇?, title:"宸ョ▼甯?, phone:"MTgwMDU1NjM5OTY=" },
+  { name:"鐜嬩簹鍑?, gender:"鐢?, unit:"椹瀺灞卞競浜虹ぞ灞€璁＄畻鏈轰俊鎭鐞嗕腑蹇?, title:"涓讳换", phone:"MTM5NTU1NzAwMDk=" },
+  { name:"璐规槍绁?, gender:"鐢?, unit:"椹瀺灞卞競浜虹ぞ灞€璁＄畻鏈轰俊鎭鐞嗕腑蹇?, title:"绉戝憳", phone:"MTM5MDU1NTI5ODA=" },
+  { name:"瑭规亽鏄?, gender:"鐢?, unit:"铓屽煚甯備汉绀惧眬淇℃伅涓績", title:"楂樼骇宸ョ▼甯?, phone:"MTgwMDU1MjgwNTA=" },
+  { name:"鍙稿墠", gender:"鐢?, unit:"铓屽煚甯備汉绀惧眬淇℃伅涓績", title:"宸ョ▼甯?, phone:"MTgwMDU1MjIzOTA=" },
+  { name:"鍚村墤閿?, gender:"鐢?, unit:"姹犲窞甯備汉绀惧眬淇℃伅涓績", title:"宸ョ▼甯?, phone:"MTgxMDU2NjM5NTA=" },
+  { name:"钖涗寒浜?, gender:"鐢?, unit:"瀹ｅ煄甯備汉绀惧眬淇℃伅涓績", title:"鍓富浠?, phone:"MTgxMTA4MzA4MjM=" },
+  { name:"绋嬬澘", gender:"鐢?, unit:"瀹ｅ煄甯備汉绀惧眬淇℃伅涓績", title:"宸ヤ綔浜哄憳", phone:"MTkxNTYzNjIyMDM=" },
+  { name:"寮犲繝鍥?, gender:"鐢?, unit:"鍏畨甯備汉绀惧眬淇℃伅涓績", title:"涓讳换", phone:"MTM2MDU2NDEyMTY=" },
+  { name:"鍒樿繍鏉?, gender:"鐢?, unit:"鍏畨甯備汉绀惧眬淇℃伅涓績", title:"宸ヤ綔浜哄憳", phone:"MTUwMjE2MDUwMDc=" },
+  { name:"绔犲畤闆?, gender:"鐢?, unit:"婊佸窞甯備汉绀惧眬淇℃伅涓績", title:"涓讳换", phone:"MTg5NTUwODAxNjg=" },
+  { name:"瀛熷簡鍏?, gender:"鐢?, unit:"婊佸窞甯備汉绀惧眬淇℃伅涓績", title:"璁惧缃戠粶绉戠闀?, phone:"MTgwNTUwMTk2Njc=" },
+  { name:"閮戦敶", gender:"鐢?, unit:"榛勫北甯備汉绀惧眬淇℃伅涓績", title:"涓讳换", phone:"MTUzMDU1OTY5NTE=" },
+  { name:"寮犵悿", gender:"濂?, unit:"榛勫北甯備汉绀惧眬淇℃伅涓績", title:"鍓富浠?, phone:"MTM4MDU1OTgyNjc=" },
+  { name:"鍒樼瓨", gender:"鐢?, unit:"瀹夊窘鐪佸姵鍔ㄥ氨涓氭湇鍔″眬", title:"涓冪骇鑱屽憳", phone:"MTUwNTY5NDM5OTI=" },
+  { name:"鏂规櫤", gender:"鐢?, unit:"瀹夊窘鐪佸姵鍔ㄥ氨涓氭湇鍔″眬", title:"涓撲笟鎶€鏈崄浜岀骇", phone:"MTU3NTUzMjg1MTE=" },
+  { name:"鏈卞厛绔?, gender:"鐢?, unit:"瀹夊窘鐪佷汉鎵嶇患鍚堟湇鍔′腑蹇?, title:"宸ョ▼甯?, phone:"MTg5NTUxNjc4NTU=" },
+  { name:"寮犻箍璇?, gender:"鐢?, unit:"瀹夊窘鐪佷汉鎵嶇患鍚堟湇鍔′腑蹇?, title:"宸ヤ綔浜哄憳", phone:"MTg5NTUxMjAyNjk=" },
+  { name:"寮犳槉", gender:"鐢?, unit:"瀹夊窘鐪佷汉浜嬭€冭瘯闄?, title:"涓冪骇鑱屽憳", phone:"MTUyNTUxNTEwMzc=" },
+  { name:"姝ュ嚒", gender:"鐢?, unit:"瀹夊窘鐪佷汉浜嬭€冭瘯闄?, title:"涓撴妧鍗佺骇", phone:"MTcyNzc1NTk5MzY=" },
+  { name:"鏉庡畤鑸?, gender:"鐢?, unit:"鐪佺ぞ淇濆眬鍩洪噾缁熻鍜屼俊鎭寲澶?, title:"涓夌骇涓讳换绉戝憳", phone:"MTM4NTYwNjk3NzE=" },
+  { name:"鏉庨尵", gender:"鐢?, unit:"鐪佷汉绀惧巺淇℃伅涓績", title:"涓讳换", phone:"MTgwMDk2OTgxODk=" },
+  { name:"闁ゆ槑鍐?, gender:"鐢?, unit:"鐪佷汉绀惧巺淇℃伅涓績", title:"鍓富浠?, phone:"MTgwMDk2OTgzMDg=" },
+  { name:"杩熸潕", gender:"鐢?, unit:"鐪佷汉绀惧巺淇℃伅涓績", title:"缃戠粶鏁版嵁瀹夊叏绠＄悊绉戠闀?, phone:"MTgxMzAwMzMyNjA=" },
+  { name:"鍒樿穬宄?, gender:"鐢?, unit:"鐪佷汉绀惧巺淇℃伅涓績", title:"绀句繚鍗＄鐞嗙宸ョ▼甯?, phone:"MTg2MDU2NTA3MTc=" },
+  { name:"寮犲崥鏂?, gender:"鐢?, unit:"鐪佷汉绀惧巺淇℃伅涓績", title:"绀句繚鍗＄鐞嗙宸ョ▼甯?, phone:"MTM5NjU4ODM5NjI=" }
+];
+
+// ===== Render Personnel =====
+function renderPersonnel(filter) {
+  var list = PERSONNEL;
+  var keyword = (filter || '').toLowerCase().trim();
+  if (keyword) {
+    list = PERSONNEL.filter(function(p) {
+      var phone = d(p.phone);
+      return p.name.toLowerCase().includes(keyword) ||
+             p.unit.toLowerCase().includes(keyword) ||
+             phone.slice(-4).includes(keyword) ||
+             phone.includes(keyword);
+    });
+  }
+  document.getElementById('searchStats').innerHTML = keyword
+    ? '鎵惧埌 <strong>' + list.length + '</strong> 浜猴紙鍏?43 浜猴級'
+    : '鍏?<strong>43</strong> 浜?;
+
+  var html = '';
+  for (var i = 0; i < list.length; i++) {
+    var p = list[i];
+    var phone = d(p.phone);
+    var masked = maskPhone(phone);
+    var avatarClass = p.gender === '濂? ? 'avatar-female' : 'avatar-male';
+    var initial = p.name.charAt(p.name.length - 1); // last char as avatar
+
+    // Highlight matching text
+    var nameHtml = p.name;
+    var unitHtml = p.unit;
+    var phoneDisplay = masked;
+    if (keyword) {
+      var re = new RegExp('(' + keyword.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + ')', 'gi');
+      nameHtml = p.name.replace(re, '<span class="highlight">$1</span>');
+      unitHtml = p.unit.replace(re, '<span class="highlight">$1</span>');
+      if (phone.slice(-4).includes(keyword) || phone.includes(keyword)) {
+        phoneDisplay = masked.replace(keyword, '<span class="highlight">$&</span>');
+      }
+    }
+
+    html += '<div class="person-card" onclick="revealPhone(this, \'' + p.phone + '\')" title="鐐瑰嚮鏌ョ湅瀹屾暣鍙风爜">' +
+      '<div class="person-avatar ' + avatarClass + '">' + initial + '</div>' +
+      '<div class="person-info">' +
+        '<div class="pi-name">' + nameHtml + ' <span style="font-size:11px;color:#95a5a6;font-weight:400">' + p.gender + '</span></div>' +
+        '<div class="pi-unit">' + unitHtml + (p.title ? ' 路 ' + p.title : '') + '</div>' +
+      '</div>' +
+      '<div class="person-phone" data-raw="' + p.phone + '">馃摓 ' + phoneDisplay + '</div>' +
+    '</div>';
+  }
+
+  if (list.length === 0) {
+    html = '<div style="text-align:center;padding:40px;color:#95a5a6;">鏈壘鍒板尮閰嶄汉鍛?/div>';
+  }
+  document.getElementById('personnelList').innerHTML = html;
+}
+
+function filterPersonnel() {
+  var val = document.getElementById('searchInput').value;
+  renderPersonnel(val);
+}
+
+// ===== Phone Reveal =====
+function revealPhone(el, b64) {
+  var phoneDiv = el.querySelector('.person-phone');
+  if (phoneDiv.classList.contains('revealed')) {
+    // Already revealed 鈥?copy to clipboard
+    var phone = d(b64);
+    copyToClipboard(phone);
+    showToast('宸插鍒讹細' + phone);
+    return;
+  }
+  // Reveal
+  var phone = d(b64);
+  phoneDiv.classList.add('revealed');
+  phoneDiv.textContent = '馃摓 ' + phone;
+  showToast('鍙风爜宸叉樉绀猴紝鍐嶆鐐瑰嚮鍙鍒?);
+}
+
+// ===== Contact Card Phone Copy =====
+function copyPhone(el, b64) {
+  var phone = d(b64);
+  copyToClipboard(phone);
+  el.textContent = '馃摓 ' + phone + ' 鉁?;
+  showToast('宸插鍒讹細' + phone);
+  setTimeout(function() {
+    el.textContent = '馃摓 ' + maskPhone(phone);
+  }, 2000);
+}
+
+function copyToClipboard(text) {
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text).catch(function(){});
+    return;
+  }
+  // Fallback
+  var ta = document.createElement('textarea');
+  ta.value = text;
+  ta.style.position = 'fixed'; ta.style.opacity = '0';
+  document.body.appendChild(ta);
+  ta.select();
+  try { document.execCommand('copy'); } catch(e) {}
+  document.body.removeChild(ta);
+}
+
+// ===== Toast =====
+var toastTimer;
+function showToast(msg) {
+  var t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(function() { t.classList.remove('show'); }, 1800);
+}
+
+// ===== Tab Switching =====
+function switchTab(tabName, el) {
+  // Update tab bar
+  document.querySelectorAll('.tab-item').forEach(function(t) { t.classList.remove('active'); });
+  if (el) el.classList.add('active');
+  // Update content
+  document.querySelectorAll('.tab-content').forEach(function(c) { c.classList.remove('active'); });
+  document.getElementById('tab-' + tabName).classList.add('active');
+  // Re-render personnel if switching to it
+  if (tabName === 'personnel') {
+    renderPersonnel(document.getElementById('searchInput').value);
+  }
+}
+
+// ===== Day Switching =====
+function switchDay(dayIndex) {
+  document.querySelectorAll('.day-btn').forEach(function(b, i) {
+    b.classList.toggle('active', i === dayIndex);
+  });
+  document.querySelectorAll('.schedule-day').forEach(function(d, i) {
+    d.classList.toggle('active', i === dayIndex);
+  });
+}
+
+// ===== Init =====
+renderPersonnel();
+</script>
+
+</body>
+</html>
